@@ -1,48 +1,56 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Note from '../Note/Note'
-import CircleButton from '../CircleButton/CircleButton'
-import './NoteListMain.css'
-import StateContext from '../Context/StateContext'
+import React from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Note from "../Note/Note";
+import CircleButton from "../CircleButton/CircleButton";
+import "./NoteListMain.css";
+import StateContext from "../Context/StateContext";
+import { getNotesForFolder } from "../notes-helpers";
 
 export default function NoteListMain(props) {
-
-  static contextType = StateContext;
-  const {folders, notes} = this.context;
-
-  //put stuff from App.js here, and wire up so it 
-
-
   return (
-    <section className='NoteListMain'>
-      <ul>
-        {notes.map(note =>
-          <li key={note.id}>
-            <Note
-              id={note.id}
-              name={note.name}
-              modified={note.modified}
-            />
-          </li>
-        )}
-      </ul>
-      <div className='NoteListMain__button-container'>
-        <CircleButton
-          tag={Link}
-          to='/add-note'
-          type='button'
-          className='NoteListMain__add-note-button'
-        >
-          <FontAwesomeIcon icon='plus' />
-          <br />
-          Note
-        </CircleButton>
-      </div>
-    </section>
-  )
+    <StateContext.Consumer>
+      {context => {
+        const notesForFolder = getNotesForFolder(
+          context.notes,
+          props.match.params
+          //the above was originally called in App.js; not sure if this syntax
+          //is correct; if doesn't render see NotePageNav CircleButton onClick
+        );
+        return (
+          <section className="NoteListMain">
+            <ul>
+              {notesForFolder.map(note => (
+                <li key={note.id}>
+                  <Note
+                    id={note.id}
+                    name={note.name}
+                    modified={note.modified}
+                  />
+                </li>
+              ))}
+            </ul>
+            <div className="NoteListMain__button-container">
+              <CircleButton
+                tag={Link}
+                to="/add-note"
+                type="button"
+                className="NoteListMain__add-note-button"
+              >
+                <FontAwesomeIcon icon="plus" />
+                <br />
+                Note
+              </CircleButton>
+            </div>
+          </section>
+        );
+      }}
+    </StateContext.Consumer>
+  );
+
+  //put stuff from App.js here, and wire up so it
 }
 
 NoteListMain.defaultProps = {
-  notes: [],
-}
+  notes: []
+};

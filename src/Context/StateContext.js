@@ -1,10 +1,10 @@
 import React from 'react';
 
-const FoldersContext = React.createContext({
+const StateContext = React.createContext({
     folder: [],
     notes: []
     //this.props.folders.id
     //this.props.folders.name
 });
 
-export default FoldersContext;
+export default StateContext;
