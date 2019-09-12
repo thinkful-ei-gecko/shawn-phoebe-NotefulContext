@@ -12,7 +12,7 @@ export default function Note(props) {
           {props.name}
         </Link>
       </h2>
-      <button className='Note__delete' type='button'>
+      <button onclick="deleteNote()" className='Note__delete' type='button'>
         <FontAwesomeIcon icon='trash-alt' />
         {' '}
         remove

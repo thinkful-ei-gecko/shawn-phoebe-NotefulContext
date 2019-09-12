@@ -8,12 +8,15 @@ import StateContext from "../Context/StateContext";
 import { getNotesForFolder } from "../notes-helpers";
 
 export default function NoteListMain(props) {
+
+  console.log();
+
   return (
     <StateContext.Consumer>
       {context => {
         const notesForFolder = getNotesForFolder(
           context.notes,
-          props.match.params
+          props.match.params.folderId
           //the above was originally called in App.js; not sure if this syntax
           //is correct; if doesn't render see NotePageNav CircleButton onClick
         );
