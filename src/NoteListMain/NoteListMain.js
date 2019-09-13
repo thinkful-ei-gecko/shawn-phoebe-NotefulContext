@@ -50,7 +50,6 @@ export default function NoteListMain(props) {
       }}
     </StateContext.Consumer>
   );
-
 }
 
 NoteListMain.defaultProps = {

@@ -10,7 +10,6 @@ export default function NoteListNav(props) {
   return (
     <StateContext.Consumer>
       {context => {
-        console.log(context);
         return (
           <div className="NoteListNav">
             <ul className="NoteListNav__list">

@@ -5,7 +5,7 @@ import NoteListNav from "../NoteListNav/NoteListNav";
 import NotePageNav from "../NotePageNav/NotePageNav";
 import NoteListMain from "../NoteListMain/NoteListMain";
 import NotePageMain from "../NotePageMain/NotePageMain";
-import dummyStore from "../dummy-store";
+// import dummyStore from "../dummy-store";
 import { findNote, findFolder } from "../notes-helpers";
 import "./App.css";
 import StateContext from "../Context/StateContext";
@@ -16,19 +16,17 @@ class App extends Component {
     folders: []
   };
 
-
+  //displays selected note; not currently being called
   updateState(noteId) {
-    const newState = this.state.notes.filter(note => note.id !== noteId); 
-    this.setState({notes: newState});
+    const newState = this.state.notes.filter(note => note.id !== noteId);
+    this.setState({ notes: newState });
   }
-
-
 
   deleteNote(noteId, deleteNoteFromState) {
     fetch(`http://localhost:9090/notes/${noteId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json"
       }
     })
       .then(res => {
@@ -36,76 +34,70 @@ class App extends Component {
           // get the error message from the response,
           return res.json().then(error => {
             // then throw it
-            throw error
-          })
+            throw error;
+          });
         }
-        return res.json()
+        return res.json();
       })
       .then(data => {
         // call the callback when the request is successful
         // this is where the App component can remove it from state
-        deleteNoteFromState(noteId)
+        deleteNoteFromState(noteId);
       })
       .catch(error => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
-
   componentDidMount() {
-    // fake date loading from API call
-    fetch(`http://localhost:9090/folders`,{
-        method: 'GET',
-        headers: {
-            'content-type': 'application/json'
-        },
-    }) 
-        .then(res => {
-            if(!res.ok){
-                return res.json().then(error => {
-                    throw error
-                })
-            }
-            return res.json();
+    //Fetch folders function
+    fetch(`http://localhost:9090/folders`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json"
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(error => {
+            throw error;
+          });
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+        this.setState({ folders: data })
+      })
+      .catch(err => {
+        console.log("Fetch Error", err);
+      });
+
+    //Fetch notes function
+    fetch(`http://localhost:9090/notes`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json"
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(error => {
+            console.log("Fetch Error");
+          });
+        }
+        return res.json();
+      })
+      .then(resJson => {
+        console.log(resJson);
+        this.setState({
+          notes: resJson
         })
-        .then(data => {
-            console.log(data);
-            this.setState({folders: data})
-        // .catch(err => {
-        //         console.log("Fetch Error", err);
-        //     });
-     })
-
-
-
-     fetch(`http://localhost:9090/notes`,{
-        method: 'GET',
-        headers: {
-            'content-type': 'application/json'
-        },
-    }) 
-        .then(res => {
-            if(!res.ok){
-                return res.json().then(error => {
-                    console.log("Fetch Error")
-                })
-            }return res.json();
-        })
-        .then(resJson => {
-            console.log(resJson);
-            this.setState({
-                notes: resJson
-            })
-        // .catch(err => {
-        //         console.log("Fetch Error", err);
-        //     });
-     })
- }
-
-
-
-
-
+      })
+      .catch(err => {
+        console.log("Fetch Error", err);
+      });
+  }
 
   renderNavRoutes() {
     //const {notes, folders} = this.state;
@@ -124,9 +116,9 @@ class App extends Component {
               path={path}
               render={routeProps => (
                 <NoteListNav
-                //folders={folders}
-                //notes={notes}
-                {...routeProps}
+                  //folders={folders}
+                  //notes={notes}
+                  {...routeProps}
                 />
               )}
             />
@@ -156,7 +148,7 @@ class App extends Component {
           value={{
             folders: this.state.folders,
             notes: this.state.notes,
-            deleteNote: this.deleteNote,
+            deleteNote: this.deleteNote
           }}
         >
           {["/", "/folder/:folderId"].map(path => (
