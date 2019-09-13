@@ -15,26 +15,24 @@ export default class Note extends React.Component {
               <Link to={`/note/${this.props.id}`}>
                 {this.props.name}
               </Link>
-            </h2>
-            )}
-    
-      <button onClick={context.deleteNoteFromState(this.props.id)} className='Note__delete' type='button'>
+            </h2>    
+            <button onClick={context.deleteNoteFromState(this.props.id)} className='Note__delete' type='button'>
               <FontAwesomeIcon icon='trash-alt' />
               {' '}
               remove
-      </button>
+            </button>
             <div className='Note__dates'>
               <div className='Note__dates-modified'>
                 Modified
-          {' '}
+                {' '}
                 <span className='Date'>
                   {format(this.props.modified, 'Do MMM YYYY')}
                 </span>
               </div>
             </div>
-          </div>
-     
-    </StateContext.Consumer>
-    )};
+          </div>   
+        )};
+      </StateContext.Consumer>
+    )
   }
-
+}
