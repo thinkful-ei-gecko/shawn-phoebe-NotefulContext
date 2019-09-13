@@ -2,7 +2,8 @@ import React from 'react';
 
 const StateContext = React.createContext({
     folder: [],
-    notes: []
+    notes: [],
+    deleteNote: (noteId) => {}
     //this.props.folders.id
     //this.props.folders.name
 });

@@ -16,6 +16,42 @@ class App extends Component {
     folders: []
   };
 
+
+  updateState(noteId) {
+    const newState = this.state.notes.filter(note => note.id !== noteId); 
+    this.setState({notes: newState});
+  }
+
+
+
+  deleteNote(noteId, deleteNoteFromState) {
+    fetch(`http://localhost:9090/notes/${noteId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          // get the error message from the response,
+          return res.json().then(error => {
+            // then throw it
+            throw error
+          })
+        }
+        return res.json()
+      })
+      .then(data => {
+        // call the callback when the request is successful
+        // this is where the App component can remove it from state
+        deleteNoteFromState(noteId)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
+
   componentDidMount() {
     // fake date loading from API call
     fetch(`http://localhost:9090/folders`,{
@@ -27,15 +63,14 @@ class App extends Component {
         .then(res => {
             if(!res.ok){
                 return res.json().then(error => {
-                    console.log("Fetch Error")
+                    throw error
                 })
-            }return res.json();
+            }
+            return res.json();
         })
-        .then(resJson => {
-            console.log(resJson);
-            this.setState({
-                folders: resJson
-            })
+        .then(data => {
+            console.log(data);
+            this.setState({folders: data})
         // .catch(err => {
         //         console.log("Fetch Error", err);
         //     });
@@ -68,36 +103,7 @@ class App extends Component {
  }
 
 
- 
 
-
-
-  deleteNote(noteId, folderId, callback) {
-    fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
-      method: 'DELETE',
-      headers: {
-        'authorization': `bearer ${config.API_KEY}`
-      }
-    })
-      .then(res => {
-        if (!res.ok) {
-          // get the error message from the response,
-          return res.json().then(error => {
-            // then throw it
-            throw error
-          })
-        }
-        return res.json()
-      })
-      .then(data => {
-        // call the callback when the request is successful
-        // this is where the App component can remove it from state
-        callback(bookmarkId)
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }
 
 
 

@@ -51,7 +51,6 @@ export default function NoteListMain(props) {
     </StateContext.Consumer>
   );
 
-  //put stuff from App.js here, and wire up so it
 }
 
 NoteListMain.defaultProps = {
